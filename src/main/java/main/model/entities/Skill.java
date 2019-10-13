@@ -33,16 +33,6 @@ public class Skill
         this.name = name;
     }
 
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
-    @ManyToMany(mappedBy = "skills")
-    private List<User> userList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

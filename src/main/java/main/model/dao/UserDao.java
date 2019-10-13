@@ -5,7 +5,8 @@ import main.model.entities.User;
 
 import java.util.List;
 
-public class UserDao extends BaseDao {
+public class UserDao extends BaseDao
+{
 
     public UserDao(SessionFactory sessionFactory) {
         super(sessionFactory);
