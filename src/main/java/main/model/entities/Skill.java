@@ -1,6 +1,10 @@
 package main.model.entities;
 
+import jdk.dynalink.linker.LinkerServices;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +32,17 @@ public class Skill
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    @ManyToMany(mappedBy = "skills")
+    private List<User> userList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

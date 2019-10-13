@@ -1,5 +1,8 @@
 package main.listeners;
 
+import main.model.entities.Skill;
+import main.model.entities.Source;
+import main.model.entities.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -16,7 +19,7 @@ import java.util.logging.Logger;
 @WebListener
 public class HibernateInitializer implements ServletContextListener
 {
-    private static Logger logger = Logger.getGlobal();
+    private static Logger logger = Logger.getLogger(HibernateInitializer.class.getName());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent)
@@ -25,7 +28,7 @@ public class HibernateInitializer implements ServletContextListener
             Configuration configuration = new Configuration();
 
             Properties hbnProperties = new Properties();
-            hbnProperties.put(Environment.DRIVER, "com.mariadb.jdbc.Driver");
+            hbnProperties.put(Environment.DRIVER, "org.mariadb.jdbc.Driver");
             hbnProperties.put(Environment.URL, "jdbc:mariadb://127.0.0.1:3306/skills_collector?useSSL=false&serverTimezone=UTC");
             // Nazwę użytkownika dostosuj do swojej instalacji MySQL
             hbnProperties.put(Environment.USER, "sc");
@@ -42,13 +45,14 @@ public class HibernateInitializer implements ServletContextListener
 
             // Odkomentuj poniższe instrukcje po utworzeniu klas encji (kolejne zadania)
 
-            //configuration.addAnnotatedClass(User.class);
-            //configuration.addAnnotatedClass(Source.class);
-            //configuration.addAnnotatedClass(Skill.class);
+            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Source.class);
+            configuration.addAnnotatedClass(Skill.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
             SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            servletContextEvent.getServletContext().setAttribute("session_factory", sessionFactory);
         }
         catch (Exception e)
         {
